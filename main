@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<style type="text/css">
+		body {
+			background-color: black ;
+			color : green;
+		}
+		p {
+			color: green;
+		}
+		h1 {
+			background-color: green;
+		}
+		a {
+			color: green;
+		}
+	</style>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>sonju site</title>
+</head>
+<body>
+<h1 align="center">sonju site</h1>
+<p align="right">>>this site is working</p>
+<h3>ссылки</h3>
+<pre>ВК : <a rel="stylesheet" type="text/css" href="http://vk.com/wrtln" >vk.com/wrtln</a></pre>
+</body>
+</html>
