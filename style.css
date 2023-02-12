@@ -12,3 +12,9 @@ h1 {
 a {
 	color: green;
 }
+
+iframe {
+	background-color: black ;
+	color : black;
+	border-color: green;
+}
