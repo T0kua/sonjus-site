@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta name="viewport" content="width=device-width, user-scalable=no">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <style>
+        canvas{
+            border :2px solid black; 
+            height: 100%;
+            width: 100%;
+        }
+        input{
+            width: 49%;
+            height: 150px;
+            font-size: 90%;
+            font-family: segoe print;
+        }
+        body{
+            font-family: segoe print;
+            font-size: 15px;
+        }
+    </style>
+</head>
+<body>
+<p id='score'>score : 0    live : 10</p> <!--информация о игре-->
+<canvas id='canvas' width="360px" height="480px"></canvas> <!--холст-->
+<br> <!--отступ от холста-->
+<input type="button" id="left" value="<--"> <!--левая кнопка-->
+<input type="button" id="right" value="-->"> <!--правая кнопка-->
+
+<script>
+    var d = document.getElementById('canvas'), //настраиваем холст
+        c = d.getContext('2d') //стандартная настройка холста
+    var ry = 40 // Y блока
+    var rx = 180 //X блока
+    var score = 0 //cчет
+    var live = 10 //жихни
+    var position = 1 //позиция платформы
+    var autopilot = false // автопилот
+    var x1 = [0, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300, 330] //положения блока
+    function game(){ // игра
+     $('#score').text('score : ' + score + '    live : ' + live) //обновляем информацию
+     if (position == 1){ //проверяем позицию платформы
+         c.fillStyle = 'white' //изменяем цвет 
+        c.fillRect(0,0,400,480) //очищаем экран
+        c.fillStyle = 'black' //изменяем цвет
+        c.fillRect(0,400,180,30) //рисуем платформу в 1 позиции
+        if (ry > 400){  //проверяем Y блока
+         if (rx < 180){ //проверяем положение платформы
+            ry = 0 //обнуляем Y
+            score += 1 //добовляем очки
+            $('#score').text('score : ' + score + '    live : ' + live) //обновляем информацию
+            rx = x1[Math.floor(Math.random() * x1.length)]; //изменяем Y блока
+         }
+        }
+     }
+     if (position == 2){ //проверяем позицию
+         c.fillStyle = 'white' //изменяем цвет
+        c.fillRect(0,0,400,480) //очищаем холст
+        c.fillStyle = 'black' //изменяем цвет
+        c.fillRect(180,400,180,30) //рисуем платформу во 2 позиции
+        if (ry > 400){ //проверяем Y блока
+         if (rx >= 180){ //проверяем положение платформы
+            ry = 0 //обнуляем Y блока
+            score += 1 //добовляем очки
+            $('#score').text('score : ' + score + '    live : ' + live) //обновляем информацию
+            rx = x1[Math.floor(Math.random() * x1.length)]; //изменяем Y блока
+         }
+        }
+     } //проверяем на проигрышную ситуацию
+     if (ry >= 480){ //проверяем Y блока
+         ry = 0 //обнуляем Y блока
+         live -= 1 //отнимаем 1 жизнь
+         rx = x1[Math.floor(Math.random() * x1.length)]; //изменяем Y блока
+         if (live <= 0){ //проверяем мертв ли игрок
+             alert('game over') //выводим сообщение о смерти
+             score = 0 //обнуляем очки
+             live = 10 //возвращаем жизни по умолчанию
+             $('#score').text('score : ' + score + '    live : ' + live) //обновляем информацию
+         }
+     }
+     c.fillRect(rx, ry, 30, 30) //рисуем блок
+     if (autopilot == true){ //автопилот
+      if (rx < 180){
+        position = 1
+      }
+      if(rx >= 180){
+        position = 2
+      }
+     }
+    }
+    setInterval(function () { //анимация экрана
+     document.addEventListener('keyup', function(e){ // получени события нажатий
+         if (e.which === 37){ //проверка нажатия клавиши "влево"
+             position = 1 //изменяем позицию платформы
+         }
+         if (e.which === 39){ //првоерка нажатия клавиши вправо
+             position = 2 //изменяем позицию платформы
+         }
+         if (e.which === 65){ //проверяем нажата ли клавиша "а"
+             position = 1 //изменяем позицию платформы
+         }
+         if (e.which === 68){ //проверка нажата ли клавиша "d"
+             position = 2 //изменяем положение  платформы
+         }
+     })
+     $('#left').click(function(){ //изменяем положение платформы если нажата кнопка
+        position = 1 //положение платформы
+     })
+     $('#right').click(function(){ //изменяем положение платформы если нажата кнопка
+      position = 2 //положжение платформы
+     })
+     c.fillStyle = 'white' //изменяем цвет
+     c.fillRect(0,0,400,480) //очищаем холст
+     if (score <= 20){ //проверяем счет
+     ry += 1 //скорость падения блока
+     }
+     if (score > 15){ //проверяем счет для ускорения игры
+         ry += score / 15 // изменяем скорость падения
+     }
+     c.fillStyle = 'black' // изменяем цвет
+     c.fillRect(rx, ry, 30, 30) //рисуем блок
+     game() //игра
+    }, 1); //количевство кадров в милесекунду
+</script>
+</body>
+</html>
