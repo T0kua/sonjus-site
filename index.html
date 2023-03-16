@@ -35,61 +35,108 @@
     var ry = 40 // Y блока
     var rx = 180 //X блока
     var score = 0 //cчет
-    var live = 10 //жихни
+    var live = 10 //жизни
     var position = 1 //позиция платформы
-    var autopilot = false // автопилот
+    var confition = 10
+    var otvet = 10
+    var confitionlist = [0,1,2,3,4,5,6,7,8,9,10]
+    var confition_equals = [
+        confitionlist[Math.floor(Math.random() * confitionlist.length)],
+        [0,1,2,3][Math.floor(Math.random() * 4)],
+        confitionlist[Math.floor(Math.random() * confitionlist.length)] //рандомим примеры
+    ] //0 - плюс   1 -минус   2 - делить   3 - умножить
     var x1 = [0, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300, 330] //положения блока
+
+    function active(){
+        confition_equals[0] = confitionlist[Math.floor(Math.random() * confitionlist.length)]; //рандомим примеры
+        confition_equals[1] = [0,1,2,3][Math.floor(Math.random() * 4)]; //рандомим примеры
+        confition_equals[2] = confitionlist[Math.floor(Math.random() * confitionlist.length)]; //рандомим примеры
+        if (confition_equals[1] == 0) {otvet = confition_equals[0] + confition_equals[2]}
+        if (confition_equals[1] == 1) {otvet = confition_equals[0] - confition_equals[2]}
+        if (confition_equals[1] == 2) {otvet = confition_equals[0] * confition_equals[2]}
+        if (confition_equals[1] == 3) {otvet = confition_equals[0] + confition_equals[2]}
+
+        if (Math.floor(Math.random() * 100) >= 40){
+            confition = otvet
+        }
+        else{
+            confition =  Math.floor(Math.random() * 100)
+        }
+        $('#score').text('score : ' + score + '    live : ' + live) //обновляем информацию
+        rx = x1[Math.floor(Math.random() * x1.length)]; //изменяем Y блока
+        ry = 0
+    }//end function
+    active()
     function game(){ // игра
+        if (confition_equals[1] == 0 || confition_equals[1] == 3){otvet = confition_equals[0] + confition_equals[2]}
+        if (confition_equals[1] == 1) {otvet = confition_equals[0] - confition_equals[2]}
+        if (confition_equals[1] == 2) {otvet = confition_equals[0] * confition_equals[2]}
      $('#score').text('score : ' + score + '    live : ' + live) //обновляем информацию
      if (position == 1){ //проверяем позицию платформы
-         c.fillStyle = 'white' //изменяем цвет 
+        c.fillStyle = 'white' //изменяем цвет 
         c.fillRect(0,0,400,480) //очищаем экран
         c.fillStyle = 'black' //изменяем цвет
         c.fillRect(0,400,180,30) //рисуем платформу в 1 позиции
         if (ry > 400){  //проверяем Y блока
-         if (rx < 180){ //проверяем положение платформы
-            ry = 0 //обнуляем Y
-            score += 1 //добовляем очки
-            $('#score').text('score : ' + score + '    live : ' + live) //обновляем информацию
-            rx = x1[Math.floor(Math.random() * x1.length)]; //изменяем Y блока
-         }
+            if (rx < 180){ //проверяем положение платформы
+                if (confition == otvet){
+                    score += 1 //добовляем очки
+                }
+                else{
+                    live -= 1
+                }
+            active()
+            }
         }
      }
+
      if (position == 2){ //проверяем позицию
-         c.fillStyle = 'white' //изменяем цвет
+        c.fillStyle = 'white' //изменяем цвет
         c.fillRect(0,0,400,480) //очищаем холст
         c.fillStyle = 'black' //изменяем цвет
         c.fillRect(180,400,180,30) //рисуем платформу во 2 позиции
         if (ry > 400){ //проверяем Y блока
-         if (rx >= 180){ //проверяем положение платформы
-            ry = 0 //обнуляем Y блока
-            score += 1 //добовляем очки
-            $('#score').text('score : ' + score + '    live : ' + live) //обновляем информацию
-            rx = x1[Math.floor(Math.random() * x1.length)]; //изменяем Y блока
-         }
+            if (rx >= 180){ //проверяем положение платформы
+                ry = 0 //обнуляем Y блока
+                if (confition == otvet){
+                    score += 1 //добовляем очки
+                }
+                else{
+                    live -= 1
+                }
+            active()
+            }
         }
-     } //проверяем на проигрышную ситуацию
+     }
+
      if (ry >= 480){ //проверяем Y блока
-         ry = 0 //обнуляем Y блока
-         live -= 1 //отнимаем 1 жизнь
-         rx = x1[Math.floor(Math.random() * x1.length)]; //изменяем Y блока
-         if (live <= 0){ //проверяем мертв ли игрок
-             alert('game over') //выводим сообщение о смерти
-             score = 0 //обнуляем очки
-             live = 10 //возвращаем жизни по умолчанию
-             $('#score').text('score : ' + score + '    live : ' + live) //обновляем информацию
-         }
-     }
-     c.fillRect(rx, ry, 30, 30) //рисуем блок
-     if (autopilot == true){ //автопилот
-      if (rx < 180){
-        position = 1
-      }
-      if(rx >= 180){
-        position = 2
-      }
-     }
+        if (confition !== otvet){
+            score += 1
+        }
+        else{
+            live -= 1 //отнимаем 1 жизнь
+        }
+        active()
     }
+
+     c.fillRect(rx, ry, 30, 30) //рисуем блок
+     c.fillStyle = 'red' // изменяем цвет
+     c.font = "30px segoe print";
+     c.fillText(confition, rx - 2, ry);
+     c.fillStyle = 'red' // изменяем цвет
+     c.font = "20px segoe print";
+
+     if (confition_equals[1] == 0 || confition_equals[1] == 3){
+        c.fillText(confition_equals[0] +"+" +  confition_equals[2] + "=", 100, 20);}
+        otvet = confition_equals[0] + confition_equals[2]
+     if (confition_equals[1] == 1) {
+        c.fillText(confition_equals[0] +"-" +  confition_equals[2] + "=", 100, 20);}
+        otvet = confition_equals[0] - confition_equals[2]
+     if (confition_equals[1] == 2) {
+        c.fillText(confition_equals[0] +"*" +  confition_equals[2] + "=", 100, 20);}
+        otvet = confition_equals[0] * confition_equals[2]
+    }
+
     setInterval(function () { //анимация экрана
      document.addEventListener('keyup', function(e){ // получени события нажатий
          if (e.which === 37){ //проверка нажатия клавиши "влево"
@@ -111,7 +158,7 @@
      $('#right').click(function(){ //изменяем положение платформы если нажата кнопка
       position = 2 //положжение платформы
      })
-     c.fillStyle = 'white' //изменяем цвет
+     c.fillStyle = 'red' //изменяем цвет
      c.fillRect(0,0,400,480) //очищаем холст
      if (score <= 20){ //проверяем счет
      ry += 1 //скорость падения блока
@@ -121,7 +168,20 @@
      }
      c.fillStyle = 'black' // изменяем цвет
      c.fillRect(rx, ry, 30, 30) //рисуем блок
-     game() //игра
+     if (live > 0){
+        game() //игра
+     }
+     if (live == 0 ){
+        live = -100
+        alert('game over') //выводим сообщение о смерти
+    }
+    if (live < 0 ){
+        c.fillStyle = 'red' //изменяем цвет
+        c.fillRect(0,0,400,480) //очищаем холст
+        c.font = "30px segoe print";
+        c.fillStyle = 'white' //изменяем цвет
+        c.fillText("game over", 200, 300);
+     }
     }, 1); //количевство кадров в милесекунду
 </script>
 </body>
