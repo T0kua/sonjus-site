@@ -19,6 +19,11 @@
         body{
             font-family: segoe print;
             font-size: 15px;
+            background-image: url("fon.jpg");
+
+        }
+        canvas{
+            background-image: url("fon.jpg");
         }
     </style>
 </head>
@@ -119,10 +124,10 @@
         active()
     }
 
-     c.fillRect(rx, ry, 30, 30) //рисуем блок
+     //c.fillRect(rx, ry, 30, 30) //рисуем блок
      c.fillStyle = 'red' // изменяем цвет
      c.font = "30px segoe print";
-     c.fillText(confition, rx - 2, ry);
+     c.fillText(confition, rx - 2, ry + 30);
      c.fillStyle = 'red' // изменяем цвет
      c.font = "20px segoe print";
 
