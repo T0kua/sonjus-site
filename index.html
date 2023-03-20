@@ -77,10 +77,16 @@
         if (confition_equals[1] == 1) {otvet = confition_equals[0] - confition_equals[2]}
         if (confition_equals[1] == 2) {otvet = confition_equals[0] * confition_equals[2]}
      $('#score').text('score : ' + score + '    live : ' + live) //обновляем информацию
+
+    c.fillStyle = 'white' //изменяем цвет 
+    c.fillRect(0,0,400,480) //очищаем экран
+    //c.fillRect(rx, ry, 30, 30) //рисуем блок
+     c.fillStyle = 'red' // изменяем цвет
+     c.font = "30px segoe print";
+     c.fillText(confition, rx - 2, ry + 30);
+     c.fillStyle = 'black' //изменяем цвет
+
      if (position == 1){ //проверяем позицию платформы
-        c.fillStyle = 'white' //изменяем цвет 
-        c.fillRect(0,0,400,480) //очищаем экран
-        c.fillStyle = 'black' //изменяем цвет
         c.fillRect(0,400,180,30) //рисуем платформу в 1 позиции
         if (ry > 400){  //проверяем Y блока
             if (rx < 180){ //проверяем положение платформы
@@ -96,9 +102,6 @@
      }
 
      if (position == 2){ //проверяем позицию
-        c.fillStyle = 'white' //изменяем цвет
-        c.fillRect(0,0,400,480) //очищаем холст
-        c.fillStyle = 'black' //изменяем цвет
         c.fillRect(180,400,180,30) //рисуем платформу во 2 позиции
         if (ry > 400){ //проверяем Y блока
             if (rx >= 180){ //проверяем положение платформы
@@ -124,13 +127,8 @@
         active()
     }
 
-     //c.fillRect(rx, ry, 30, 30) //рисуем блок
-     c.fillStyle = 'red' // изменяем цвет
-     c.font = "30px segoe print";
-     c.fillText(confition, rx - 2, ry + 30);
-     c.fillStyle = 'red' // изменяем цвет
+    c.fillStyle = 'red' // изменяем цвет
      c.font = "20px segoe print";
-
      if (confition_equals[1] == 0 || confition_equals[1] == 3){
         c.fillText(confition_equals[0] +"+" +  confition_equals[2] + "=", 100, 20);}
         otvet = confition_equals[0] + confition_equals[2]
